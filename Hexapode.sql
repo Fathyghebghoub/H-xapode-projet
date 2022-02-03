@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mer. 02 fév. 2022 à 22:24
+-- Généré le : jeu. 03 fév. 2022 à 15:04
 -- Version du serveur :  8.0.27-0ubuntu0.20.04.1
 -- Version de PHP : 7.4.3
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Mvt` (
   `idMvt` int NOT NULL,
+  `idPARCOURS` int NOT NULL,
   `CodeMvt` varchar(3) NOT NULL,
   `TimingMvt` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -38,12 +39,12 @@ CREATE TABLE `Mvt` (
 -- Déchargement des données de la table `Mvt`
 --
 
-INSERT INTO `Mvt` (`idMvt`, `CodeMvt`, `TimingMvt`) VALUES
-(1, '1A', 1),
-(2, '1B', 1),
-(3, '1C', 2),
-(4, '1D', 3),
-(5, '1E', 3);
+INSERT INTO `Mvt` (`idMvt`, `idPARCOURS`, `CodeMvt`, `TimingMvt`) VALUES
+(1, 1, '1A', 1),
+(2, 1, '1B', 1),
+(3, 1, '1C', 2),
+(4, 1, '1D', 3),
+(5, 1, '1E', 3);
 
 -- --------------------------------------------------------
 
@@ -55,8 +56,6 @@ CREATE TABLE `PARCOURS` (
   `idPARCOURS` int NOT NULL,
   `idUtilisateur` int NOT NULL,
   `idMvt` int NOT NULL,
-  `ListMvt` varchar(255) NOT NULL,
-  `TimingParcours` varchar(100) NOT NULL,
   `NomParcours` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -64,8 +63,8 @@ CREATE TABLE `PARCOURS` (
 -- Déchargement des données de la table `PARCOURS`
 --
 
-INSERT INTO `PARCOURS` (`idPARCOURS`, `idUtilisateur`, `idMvt`, `ListMvt`, `TimingParcours`, `NomParcours`) VALUES
-(1, 1, 1, '1C,2C,3C', '1,2', 'Test');
+INSERT INTO `PARCOURS` (`idPARCOURS`, `idUtilisateur`, `idMvt`, `NomParcours`) VALUES
+(1, 1, 1, 'Test');
 
 -- --------------------------------------------------------
 
@@ -97,7 +96,8 @@ INSERT INTO `Utilisateur` (`idUtilisateur`, `Identifiant`, `Mdp`) VALUES
 -- Index pour la table `Mvt`
 --
 ALTER TABLE `Mvt`
-  ADD PRIMARY KEY (`idMvt`);
+  ADD PRIMARY KEY (`idMvt`),
+  ADD KEY `idPARCOURS_idx` (`idPARCOURS`);
 
 --
 -- Index pour la table `PARCOURS`
@@ -138,6 +138,12 @@ ALTER TABLE `Utilisateur`
 --
 -- Contraintes pour les tables déchargées
 --
+
+--
+-- Contraintes pour la table `Mvt`
+--
+ALTER TABLE `Mvt`
+  ADD CONSTRAINT `idParcours` FOREIGN KEY (`idPARCOURS`) REFERENCES `PARCOURS` (`idPARCOURS`);
 
 --
 -- Contraintes pour la table `PARCOURS`
